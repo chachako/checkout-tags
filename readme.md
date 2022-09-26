@@ -52,6 +52,22 @@ This action checks-out the tags you want from the upstream in your current git w
 
 ------
 
+#### token: ${{ github.token }}
+
+> **Personal access token (PAT) used to access repositories.**
+>
+> 
+>
+> **Note**
+>
+> We recommend using a service account with the least permissions necessary.
+> Also when generating a new PAT, select the least scopes necessary.
+> 
+> [Learn more about creating and using encrypted secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)
+
+
+------
+
 #### stage: ''
 
 > **Stage to be executed can be '`1`' or '`2`'.**
