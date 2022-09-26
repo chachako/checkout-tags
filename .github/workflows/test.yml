@@ -1,0 +1,79 @@
+name: 'build-test'
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build: # make sure build/ci work properly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          npm install
+      - run: |
+          npm run all
+  test: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Checking out specified tags
+        id: checkout-tags
+        uses: ./
+        with:
+          base: 'vuejs/vue' # fake upstream so that we can test the action behaviors
+          filter-tags: 'v[2-9]\.[7-9]\.[2-6].*'
+
+      - name: Check if all tags are checked out
+        run: |
+          TAGS="${{ steps.checkout-tags.outputs.tags }}"
+          BRANCHES="${{ steps.checkout-tags.outputs.branches }}"
+          while read branch; do
+            git checkout $branch
+            # Get the current branch name and check whether it exists in the tag list.
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            CORRESPONDING_TAG=${CURRENT_BRANCH#checkout-tags/}
+            if [[ $TAGS != *$CORRESPONDING_TAG* ]]; then
+              echo "An unexpected branch was checked out. It is not in the tag list."
+              exit 1
+            fi
+          done <<< "BRANCHES"
+
+  test-staged: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Stage 1
+        id: checkout-tags-stage1
+        uses: ./
+        with:
+          base: 'vuejs/vue' # fake upstream so that we can test the action behaviors
+          filter: 'v[2-9]\.[7-9]\.[2-6].*'
+          stage: 1
+
+      - name: Stage 2
+        if: ${{ steps.checkout-tags-stage1.outputs.up-to-date == 'false' }}
+        uses: ./
+        with:
+          base: 'vuejs/vue' # fake upstream so that we can test the action behaviors
+          stage: 2
+          stage2-tags: ${{ steps.checkout-tags-stage1.outputs.tags }}
+
+      - name: Check if all tags are checked out
+        run: |
+          TAGS="${{ steps.checkout-tags.outputs.tags }}"
+          BRANCHES="${{ steps.checkout-tags.outputs.branches }}"
+          while read branch; do
+            git checkout $branch
+            # Get the current branch name and check whether it exists in the tag list.
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            CORRESPONDING_TAG=${CURRENT_BRANCH#checkout-tags/}
+            if [[ $TAGS != *$CORRESPONDING_TAG* ]]; then
+              echo "An unexpected branch was checked out. It is not in the tag list."
+              exit 1
+            fi
+          done <<< "BRANCHES"

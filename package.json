@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "author": "Chachako",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chachako/checkout-tags.git"
+  },
+  "scripts": {
+    "build": "npm run format && tsc",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'",
+    "format-check": "prettier --check '**/*.{ts,tsx,js,jsx,json}'",
+    "lint": "eslint \"{src,tests,stories}/**/*.{ts,tsx,js,jsx,json}\"",
+    "all": "npm run build && npm run format && npm run lint"
+  },
+  "dependencies": {
+    "@actions/core": "1.9.1",
+    "@actions/exec": "1.1.1",
+    "@actions/github": "5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "16.10.5",
+    "@typescript-eslint/parser": "5.38.0",
+    "eslint": "8.24.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-github": "4.3.7",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "2.7.1",
+    "typescript": "4.8.3"
+  }
+}

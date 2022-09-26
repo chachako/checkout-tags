@@ -1,0 +1,70 @@
+name: 'Checkout Tags'
+author: 'chachako <chachakko@outlook.com>'
+description: 'Action for checking out upstream tags.'
+
+branding:
+  icon: 'git-branch'
+  color: 'gray-dark'
+
+inputs:
+  base:
+    description: >
+      Base (upstream) repository name with owner. For example, 'torvalds/linux'.
+      
+      If the value is not specified, the default value is the upstream repository of
+      the current fork repository, and if the current repository is not a fork, the
+      workflow will fail.
+  head:
+    description: >
+      Head (fork) repository name with owner. For example, 'pop-os/linux'.
+      
+      If the value is not specified, the default value is the current repository.
+    default: ${{ github.repository }}
+  overwrite:
+    description: >
+      Whether to check out and overwrite the existing branches corresponding to the
+      tags (in "checkout-tags/<tag-name>" format), otherwise skip them.
+    default: 'false'
+  filter:
+    description: >
+      Filter tags by regular expression. For example, the regex "^v[2-9]\..*" controls
+      only check out tags larger than the "v2" version.
+    default: '.*'
+  stage:
+    description: >
+      Stage to be executed can be '1' or '2'.
+      
+      
+      The action is divided into two stages. The first stage is used to detect the existence
+      of tags that need to be checked out, and the second stage is used to check out tags.
+      
+      
+      For example, the "up-to-date" output of the first stage can be used to determine whether
+      the repository needs to be checkout, thus saving time.
+      
+      
+      If the value is not specified, that means two stages are executed in order.
+  stage2-tags:
+    description: >
+      Tags to be checked out in the second stage. This value should be the output value of the
+      first stage. If the input of 'stage' is '2', but this value is not specified, the workflow
+      will fail.
+      
+      
+      The value is a string of tags separated by line breaks (\n).
+
+outputs:
+  up-to-date:
+    description: 'A boolean value represents whether there is any new tag to check out.'
+  tags:
+    description: 'A (multi-line) string value represents the list of tags to be checked out.'
+  branches:
+    description: >
+      A (multi-line) string value represents the checked out list of branches.
+    
+      All branches name are in format of "checkout-tags/<tag-name>", and all branches
+      are checked out from the corresponding tags.
+      
+runs:
+  using: 'node16'
+  main: 'dist/main.js'
