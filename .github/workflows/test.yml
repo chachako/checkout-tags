@@ -11,7 +11,7 @@ env:
     while read branch; do
       git checkout -B $branch heads/$branch
       # Get the current branch name
-      currentBranch=$(git rev-parse --abbrev-ref HEAD)
+      currentBranch=$(git branch --show-current)
       correspondingTag=${currentBranch#checkout-tags/}
       # Check if there are corresponding branches in tags
       if [[ $tags != *$correspondingTag* ]]; then
