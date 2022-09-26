@@ -10,11 +10,5 @@
     "strictPropertyInitialization": false,
     "moduleResolution": "node"
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "tests",
-    "jest.config.ts",
-    "jest.config.*.ts"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

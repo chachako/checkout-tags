@@ -6,6 +6,20 @@ on: # rebuild any PRs and main branch changes
       - main
       - 'releases/*'
 
+env:
+  CHECK_SHELL: |
+    while read branch; do
+      git checkout -B $branch heads/$branch
+      # Get the current branch name
+      currentBranch=$(git rev-parse --abbrev-ref HEAD)
+      correspondingTag=${currentBranch#checkout-tags/}
+      # Check if there are corresponding branches in tags
+      if [[ $tags != *$correspondingTag* ]]; then
+        echo "Branch '$currentBranch' is checked out, but it is not in the tags list."
+        exit 1
+      fi
+    done <<< $branches
+
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
@@ -29,18 +43,9 @@ jobs:
 
       - name: Check if all tags are checked out
         run: |
-          TAGS="${{ steps.checkout-tags.outputs.tags }}"
-          BRANCHES="${{ steps.checkout-tags.outputs.branches }}"
-          while read branch; do
-            git checkout $branch
-            # Get the current branch name and check whether it exists in the tag list.
-            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            CORRESPONDING_TAG=${CURRENT_BRANCH#checkout-tags/}
-            if [[ $TAGS != *$CORRESPONDING_TAG* ]]; then
-              echo "An unexpected branch was checked out. It is not in the tag list."
-              exit 1
-            fi
-          done <<< $BRANCHES
+          tags="${{ steps.checkout-tags.outputs.tags }}"
+          branches="${{ steps.checkout-tags.outputs.branches }}"
+          ${{ env.CHECK_SHELL }}
 
   test-staged: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
@@ -65,15 +70,6 @@ jobs:
 
       - name: Check if all tags are checked out
         run: |
-          TAGS="${{ steps.checkout-tags.outputs.tags }}"
-          BRANCHES="${{ steps.checkout-tags.outputs.branches }}"
-          while read branch; do
-            git checkout $branch
-            # Get the current branch name and check whether it exists in the tag list.
-            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            CORRESPONDING_TAG=${CURRENT_BRANCH#checkout-tags/}
-            if [[ $TAGS != *$CORRESPONDING_TAG* ]]; then
-              echo "An unexpected branch was checked out. It is not in the tag list."
-              exit 1
-            fi
-          done <<< $BRANCHES
+          tags="${{ steps.checkout-tags.outputs.tags }}"
+          branches="${{ steps.checkout-tags.outputs.branches }}"
+          ${{ env.CHECK_SHELL }}
