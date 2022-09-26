@@ -1,7 +1,8 @@
-import { Stage } from './index'
-import { Inputs } from '../model'
-import { BranchPrefix } from '../consts'
 import * as core from '@actions/core'
+
+import { BranchPrefix } from '../consts'
+import { Inputs } from '../model'
+import { Stage } from './index'
 
 export type UncheckedTags = string[]
 

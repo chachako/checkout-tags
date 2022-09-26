@@ -1,8 +1,9 @@
-import { Stage, UncheckedTags } from './index'
-import { Inputs } from '../model'
-import { exec } from '@actions/exec'
-import { BranchPrefix, Upstream } from '../consts'
 import * as core from '@actions/core'
+import { exec } from '@actions/exec'
+
+import { BranchPrefix, Upstream } from '../consts'
+import { Inputs } from '../model'
+import { Stage, UncheckedTags } from './index'
 
 /**
  * A stage to checking out all unchecked tags from upstream.
