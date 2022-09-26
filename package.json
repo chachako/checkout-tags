@@ -1,5 +1,5 @@
 {
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "private": true,
   "author": "Chachako",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
     "url": "git+https://github.com/chachako/checkout-tags.git"
   },
   "scripts": {
-    "build": "npm run format && tsc",
+    "build": "npm run format && tsc && ncc build --license licenses.txt",
     "format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'",
     "format-check": "prettier --check '**/*.{ts,tsx,js,jsx,json}'",
     "lint": "eslint \"{src,tests,stories}/**/*.{ts,tsx,js,jsx,json}\"",
@@ -20,6 +20,7 @@
     "@actions/github": "5.1.0"
   },
   "devDependencies": {
+    "@vercel/ncc": "0.34.0",
     "@types/node": "16.11.60",
     "@typescript-eslint/parser": "5.38.0",
     "eslint": "8.24.0",

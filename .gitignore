@@ -85,8 +85,10 @@ typings/
 Thumbs.db
 
 # Ignore built ts files
+/dist/**
+!/dist/index.js
+!/dist/licenses.txt
 **/*.generated.ts
 tests/runner/*
 lib/**/*
-/dist
 /config.js
