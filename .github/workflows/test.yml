@@ -62,6 +62,7 @@ jobs:
 
       - name: Stage 2
         if: ${{ steps.checkout-tags-stage1.outputs.up-to-date == 'false' }}
+        id: checkout-tags-stage2
         uses: ./
         with:
           base: 'vuejs/vue' # fake upstream so that we can test the action behaviors
@@ -70,6 +71,6 @@ jobs:
 
       - name: Check if all tags are checked out
         run: |
-          tags="${{ steps.checkout-tags.outputs.tags }}"
-          branches="${{ steps.checkout-tags.outputs.branches }}"
+          tags="${{ steps.checkout-tags-stage1.outputs.tags }}"
+          branches="${{ steps.checkout-tags-stage2.outputs.branches }}"
           ${{ env.CHECK_SHELL }}
