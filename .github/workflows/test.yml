@@ -40,7 +40,7 @@ jobs:
               echo "An unexpected branch was checked out. It is not in the tag list."
               exit 1
             fi
-          done <<< "BRANCHES"
+          done <<< $BRANCHES
 
   test-staged: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
@@ -76,4 +76,4 @@ jobs:
               echo "An unexpected branch was checked out. It is not in the tag list."
               exit 1
             fi
-          done <<< "BRANCHES"
+          done <<< $BRANCHES
