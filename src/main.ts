@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
+
 import { Inputs } from './model'
-import { executeStages, Detect, Checkout } from './stage'
+import { Checkout, Detect, executeStages } from './stage'
 
 async function run() {
   try {

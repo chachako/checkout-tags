@@ -1,5 +1,6 @@
-import { RepositoryInfo } from './model'
 import { GitHub as GithubBacking } from '@actions/github/lib/utils'
+
+import { RepositoryInfo } from './model'
 
 type _Github = InstanceType<typeof GithubBacking>
 
