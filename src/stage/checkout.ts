@@ -1,6 +1,7 @@
 import { Stage, UncheckedTags } from './index'
 import { Inputs } from '../model'
 import { exec } from '@actions/exec'
+import { BranchPrefix, Upstream } from '../consts'
 import * as core from '@actions/core'
 
 /**
@@ -20,6 +21,7 @@ export const Checkout: Stage<UncheckedTags> = async (
   globals: Inputs,
   input: UncheckedTags,
 ) => {
+  core.debug('Checkout stage')
   const branches = input.map(tag => `${BranchPrefix}${tag}`)
   try {
     // Add upstream remote
