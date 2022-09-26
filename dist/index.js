@@ -10,7 +10,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9864);
-/* harmony import */ var _stage__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(3164);
+/* harmony import */ var _stage__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(7746);
 
 
 
@@ -121,7 +121,7 @@ function parseRepo(repo) {
 
 /***/ }),
 
-/***/ 3164:
+/***/ 7746:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -133,9 +133,14 @@ __nccwpck_require__.d(__webpack_exports__, {
   "_M": () => (/* binding */ executeStages)
 });
 
+;// CONCATENATED MODULE: ./dist/consts.js
+const BranchPrefix = 'checkout-tags/';
+const Upstream = 'upstream';
+
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
 ;// CONCATENATED MODULE: ./dist/stage/detect.js
+
 
 /**
  * A stage to detect all tags in the **base repository**
@@ -148,6 +153,7 @@ var core = __nccwpck_require__(2186);
  * @author Chachako
  */
 const Detect = async (globals) => {
+    core.debug('Detect stage');
     const unchecked = [];
     try {
         const baseTags = await globals.github.listAllTags(globals.base);
@@ -164,10 +170,14 @@ const Detect = async (globals) => {
         }
     }
     finally {
+        const upToDate = unchecked.length === 0;
+        if (!upToDate) {
+            core.info(`Unchecked tags found: '${unchecked.join(', ')}'`);
+        }
         // Once succeeded, we can set all unchecked tag names
         // to Github workflow outputs
         core.setOutput('tags', unchecked.join('\n'));
-        core.setOutput('up-to-date', unchecked.length === 0);
+        core.setOutput('up-to-date', upToDate);
     }
     return unchecked;
 };
@@ -175,6 +185,7 @@ const Detect = async (globals) => {
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(1514);
 ;// CONCATENATED MODULE: ./dist/stage/checkout.js
+
 
 
 /**
@@ -191,6 +202,7 @@ var exec = __nccwpck_require__(1514);
  * @author Chachako
  */
 const Checkout = async (globals, input) => {
+    core.debug('Checkout stage');
     const branches = input.map(tag => `${BranchPrefix}${tag}`);
     try {
         // Add upstream remote

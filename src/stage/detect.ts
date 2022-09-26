@@ -1,5 +1,6 @@
 import { Stage } from './index'
 import { Inputs } from '../model'
+import { BranchPrefix } from '../consts'
 import * as core from '@actions/core'
 
 export type UncheckedTags = string[]
@@ -17,8 +18,8 @@ export type UncheckedTags = string[]
 export const Detect: Stage<unknown, UncheckedTags> = async (
   globals: Inputs,
 ) => {
+  core.debug('Detect stage')
   const unchecked: UncheckedTags = []
-
   try {
     const baseTags = await globals.github.listAllTags(globals.base)
     const headBranches = await globals.github.listAllBranches(globals.head)
@@ -37,10 +38,14 @@ export const Detect: Stage<unknown, UncheckedTags> = async (
       }
     }
   } finally {
+    const upToDate = unchecked.length === 0
+    if (!upToDate) {
+      core.info(`Unchecked tags found: '${unchecked.join(', ')}'`)
+    }
     // Once succeeded, we can set all unchecked tag names
     // to Github workflow outputs
     core.setOutput('tags', unchecked.join('\n'))
-    core.setOutput('up-to-date', unchecked.length === 0)
+    core.setOutput('up-to-date', upToDate)
   }
 
   return unchecked
