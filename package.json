@@ -1,4 +1,5 @@
 {
+  "main": "dist/index.js",
   "private": true,
   "author": "Chachako",
   "license": "Apache-2.0",
