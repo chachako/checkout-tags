@@ -1,18 +1,18 @@
 {
   "main": "dist/main.js",
-  "private": true,
   "author": "Chachako",
   "license": "Apache-2.0",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chachako/checkout-tags.git"
   },
   "scripts": {
-    "build": "npm run format && tsc && ncc build --license licenses.txt",
-    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'",
-    "format-check": "prettier --check '**/*.{ts,tsx,js,jsx,json}'",
-    "lint": "eslint \"{src,tests,stories}/**/*.{ts,tsx,js,jsx,json}\"",
-    "all": "npm run build && npm run format && npm run lint"
+    "build": "rm -rf dist && npm run format && tsc && ncc build --license licenses.txt",
+    "format": "prettier --write '**/*.{ts,json}'",
+    "format-check": "prettier --check '**/*.{ts,json}'",
+    "lint": "eslint './src/**/*.ts'",
+    "all": "npm run build && npm run lint"
   },
   "dependencies": {
     "@actions/core": "1.9.1",
