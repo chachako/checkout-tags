@@ -18,7 +18,7 @@ import { Stage, UncheckedTags } from './index'
  *
  * @author Chachako
  */
-export const Checkout: Stage<UncheckedTags> = async (
+export const checkout: Stage<UncheckedTags> = async (
   globals: Inputs,
   input: UncheckedTags,
 ) => {

@@ -16,7 +16,7 @@ export type UncheckedTags = string[]
  *
  * @author Chachako
  */
-export const Detect: Stage<unknown, UncheckedTags> = async (
+export const detect: Stage<unknown, UncheckedTags> = async (
   globals: Inputs,
 ) => {
   core.debug('Detect stage')
