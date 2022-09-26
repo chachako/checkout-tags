@@ -16,6 +16,26 @@ export class Github {
     this.api = api
   }
 
+  async getUpstream(repo: RepositoryInfo): Promise<RepositoryInfo> {
+    const response = await this.api.rest.repos.get({
+      owner: repo.owner,
+      repo: repo.name,
+    })
+    const upstream = response.data.parent
+
+    if (response.data.fork && upstream) {
+      return {
+        owner: upstream.owner.login,
+        name: upstream.name,
+      }
+    }
+
+    throw new Error(
+      `Input 'base' not specified and repository '${repo.owner}/${repo.name}'
+       is not a forked repository.`,
+    )
+  }
+
   async getCloneUrl(repo: RepositoryInfo): Promise<string> {
     const response = await this.api.rest.repos.get({
       owner: repo.owner,

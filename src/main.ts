@@ -6,6 +6,7 @@ import { checkout, detect, executeStages } from './stage'
 async function run() {
   try {
     const inputs = new Inputs()
+    await inputs.findBaseRepo()
     switch (inputs.stage) {
       case 0:
         await executeStages(inputs, [detect, checkout])

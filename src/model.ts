@@ -20,12 +20,22 @@ export type RepositoryInfo = {
  */
 export class Inputs {
   token = core.getInput('token', { required: true })
-  base = parseRepo(core.getInput('base'))
+  base: RepositoryInfo
   head = parseRepo(core.getInput('head'))
   filter = RegExp(core.getInput('filter'))
   overwrite = core.getBooleanInput('overwrite')
   stage = parseInt(core.getInput('stage') || '0')
   github: Github = new Github(github.getOctokit(this.token))
+
+  async findBaseRepo() {
+    const input = core.getInput('base')
+    if (input) {
+      this.base = parseRepo(input)
+    } else {
+      this.base = await this.github.getUpstream(this.head)
+    }
+    core.debug(`Base repository: ${this.base.owner}/${this.base.name}`)
+  }
 }
 
 function parseRepo(repo: string): RepositoryInfo {
