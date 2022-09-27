@@ -8,11 +8,11 @@
     "url": "git+https://github.com/chachako/checkout-tags.git"
   },
   "scripts": {
-    "build": "rm -rf dist && npm run format && tsc && ncc build --license licenses.txt",
+    "build": "rm -rf dist && yarn run format && tsc && ncc build --license licenses.txt",
     "format": "prettier --write '**/*.{ts,json}'",
     "format-check": "prettier --check '**/*.{ts,json}'",
     "lint": "eslint './src/**/*.ts'",
-    "all": "npm run build && npm run lint"
+    "all": "yarn upgrade && yarn run build && yarn run lint"
   },
   "dependencies": {
     "@actions/core": "1.9.1",
