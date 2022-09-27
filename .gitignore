@@ -92,3 +92,14 @@ Thumbs.db
 tests/runner/*
 lib/**/*
 /config.js
+
+# IDEA
+*.iml
+*.iws
+*.ipr
+/.idea/**
+!/.idea/codeStyles/
+!/.idea/codeStyles/**
+!/.idea/inspectionProfiles/
+!/.idea/inspectionProfiles/**
+!/.idea/prettier.xml
