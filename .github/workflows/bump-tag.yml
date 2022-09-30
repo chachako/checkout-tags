@@ -1,0 +1,30 @@
+name: Bump tag
+
+on:
+  schedule: # we bump the patch version once a week
+    - cron: '0 0 * * 1'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup semver-tool
+        run: |
+          # Download the script and save it to /usr/local/bin
+          wget -O /usr/local/bin/semver \
+            https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          # Make script executable
+          chmod +x /usr/local/bin/semver
+
+      - name: Bump the patch version of the latest tag
+        run: |
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          # Bump the patch version
+          NEW_TAG=v$(semver bump patch $LATEST_TAG)
+          # Create a new tag
+          git tag $NEW_TAG
+          # Push the new tag
+          git push origin $NEW_TAG
