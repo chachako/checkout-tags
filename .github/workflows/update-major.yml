@@ -1,0 +1,20 @@
+name: Update Github Action major tag
+
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Repoint the major tag
+        run: |
+          export TAG="${GITHUB_REF##refs/tags/}"
+          export MAJOR="${TAG%%.*}"
+          git config user.name 'Github Actions'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag --force -a "${MAJOR}" -m "release: ${MAJOR}"
+          git push --force origin "${MAJOR}"
