@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,9 +15,15 @@ jobs:
 
       - name: Repoint the major tag
         run: |
-          export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          export MAJOR=${TAG%%.*}
+          TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          MAJOR=${TAG%%.*}
           git config user.name 'Github Actions'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git tag --force -a "${MAJOR}" -m "release: ${MAJOR}"
           git push --force origin "${MAJOR}"
+          
+          echo "MAJOR=${MAJOR}" >> $GITHUB_ENV
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.MAJOR }}
