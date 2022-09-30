@@ -22,6 +22,13 @@ jobs:
         run: |
           # Get the latest tag
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          
+          # Check whether the tag is the last commit
+          if [ $(git rev-list -n 1 $LATEST_TAG) == $(git rev-parse HEAD) ]; then
+            echo "The latest tag is the last commit, no need to bump."
+            exit 0
+          fi
+          
           # Bump the patch version
           NEW_TAG=v$(semver bump patch $LATEST_TAG)
           # Create a new tag
