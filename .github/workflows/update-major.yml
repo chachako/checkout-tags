@@ -1,8 +1,9 @@
-name: Update Github Action major tag
+name: Update Action major tag
 
 on:
   release:
     types: [published, edited]
+  workflow_dispatch:
 
 jobs:
   release:

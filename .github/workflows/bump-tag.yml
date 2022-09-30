@@ -3,6 +3,7 @@ name: Bump tag
 on:
   schedule: # we bump the patch version once a week
     - cron: '0 0 * * 1'
+  workflow_dispatch:
 
 jobs:
   release:
