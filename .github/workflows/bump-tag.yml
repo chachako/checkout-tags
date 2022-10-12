@@ -24,7 +24,7 @@ jobs:
       - name: Bump the patch version of the latest tag
         run: |
           # Get the latest tag
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          LATEST_TAG=$(git tag -l | sort -V | tail -n 1)
           
           # Check whether the tag is the last commit
           if [ $(git rev-list -n 1 $LATEST_TAG) == $(git rev-parse HEAD) ]; then
