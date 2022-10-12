@@ -161,9 +161,53 @@ __nccwpck_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(1514);
 ;// CONCATENATED MODULE: ./dist/consts.js
 const BranchPrefix = 'checkout-tags/';
 const Upstream = 'upstream';
+
+;// CONCATENATED MODULE: ./dist/stage/checkout.js
+
+
+
+/**
+ * A stage to checking out all unchecked tags from upstream.
+ *
+ * ## Input
+ *
+ * All tag names that can be checked-out.
+ *
+ * ## Output
+ *
+ * All checked-out branch names.
+ *
+ * @author Chachako
+ */
+const checkout = async (globals, input) => {
+    core.debug('Checkout stage');
+    const branches = input.map(tag => `${BranchPrefix}${tag}`);
+    try {
+        // Add upstream remote
+        const upstreamUrl = await globals.github.getCloneUrl(globals.base);
+        await (0,exec.exec)('git', ['remote', 'add', Upstream, upstreamUrl]);
+        core.debug(`Upstream remote added: ${upstreamUrl}`);
+        // Fetch input tags from upstream
+        const refspecs = input.map(tag => `+refs/tags/${tag}:refs/tags/upstream@${BranchPrefix}${tag}`);
+        core.debug(`Fetching refspecs: ${refspecs.join(' ')}`);
+        await (0,exec.exec)('git', ['fetch', Upstream, ...refspecs, '--no-tags']);
+        // Checkout input tags to local branches
+        for (const branch of branches) {
+            await (0,exec.exec)('git', ['checkout', `tags/upstream@${branch}`, '-b', branch]);
+        }
+    }
+    finally {
+        core.debug(`Checked out branches: ${branches.join(' ')}`);
+        // Once succeeded, we can set the checked out local branches
+        // to Github workflow outputs
+        core.setOutput('branches', branches.join('\n'));
+    }
+};
 
 ;// CONCATENATED MODULE: ./dist/stage/detect.js
 
@@ -206,50 +250,6 @@ const detect = async (globals) => {
         core.setOutput('up-to-date', upToDate);
     }
     return unchecked;
-};
-
-// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var exec = __nccwpck_require__(1514);
-;// CONCATENATED MODULE: ./dist/stage/checkout.js
-
-
-
-/**
- * A stage to checking out all unchecked tags from upstream.
- *
- * ## Input
- *
- * All tag names that can be checked-out.
- *
- * ## Output
- *
- * All checked-out branch names.
- *
- * @author Chachako
- */
-const checkout = async (globals, input) => {
-    core.debug('Checkout stage');
-    const branches = input.map(tag => `${BranchPrefix}${tag}`);
-    try {
-        // Add upstream remote
-        const upstreamUrl = await globals.github.getCloneUrl(globals.base);
-        await (0,exec.exec)('git', ['remote', 'add', Upstream, upstreamUrl]);
-        core.debug(`Upstream remote added: ${upstreamUrl}`);
-        // Fetch input tags from upstream
-        const refspecs = input.map(tag => `+refs/tags/${tag}:refs/tags/upstream@${BranchPrefix}${tag}`);
-        core.debug(`Fetching refspecs: ${refspecs.join(' ')}`);
-        await (0,exec.exec)('git', ['fetch', Upstream, ...refspecs, '--no-tags']);
-        // Checkout input tags to local branches
-        for (const branch of branches) {
-            await (0,exec.exec)('git', ['checkout', `tags/upstream@${branch}`, '-b', branch]);
-        }
-    }
-    finally {
-        core.debug(`Checked out branches: ${branches.join(' ')}`);
-        // Once succeeded, we can set the checked out local branches
-        // to Github workflow outputs
-        core.setOutput('branches', branches.join('\n'));
-    }
 };
 
 ;// CONCATENATED MODULE: ./dist/stage/index.js

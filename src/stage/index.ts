@@ -29,5 +29,5 @@ export async function executeStages(
   }
 }
 
-export * from './detect'
 export * from './checkout'
+export * from './detect'
