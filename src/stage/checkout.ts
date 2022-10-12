@@ -33,14 +33,14 @@ export const checkout: Stage<UncheckedTags> = async (
 
     // Fetch input tags from upstream
     const refspecs = input.map(
-      tag => `+refs/tags/${tag}:refs/tags/${BranchPrefix}${tag}`,
+      tag => `+refs/tags/${tag}:refs/tags/upstream@${BranchPrefix}${tag}`,
     )
     core.debug(`Fetching refspecs: ${refspecs.join(' ')}`)
     await exec('git', ['fetch', Upstream, ...refspecs, '--no-tags'])
 
     // Checkout input tags to local branches
     for (const branch of branches) {
-      await exec('git', ['checkout', '-b', branch, `tags/${branch}`])
+      await exec('git', ['checkout', `tags/upstream@${branch}`, '-b', branch])
     }
   } finally {
     core.debug(`Checked out branches: ${branches.join(' ')}`)
