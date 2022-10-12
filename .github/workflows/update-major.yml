@@ -15,8 +15,8 @@ jobs:
 
       - name: Repoint the major tag
         run: |
-          TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          MAJOR=${TAG%%.*}
+          LATEST_TAG=$(git tag -l | sort -V | tail -n 1)
+          MAJOR=${LATEST_TAG%%.*}
           git config user.name 'Github Actions'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git tag --force -a "${MAJOR}" -m "release: ${MAJOR}"
