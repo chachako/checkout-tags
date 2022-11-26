@@ -55,6 +55,12 @@ inputs:
       
       
       If the value is not specified, that means two stages are executed in order.
+  stage1-branch-prefixes:
+    description: >
+      Branch prefixes for detecting checked-out branches.
+      
+      Multiple prefixes are separated by semicolons, such as `checkout-tags/;checkout-tags/`.
+    default: 'checkout-tags/'
   stage2-tags:
     description: >
       Tags to be checked out in the second stage. This value should be the output value of the
