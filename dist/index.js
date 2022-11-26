@@ -124,6 +124,7 @@ class Inputs {
     filter = RegExp(core.getInput('filter'));
     overwrite = core.getBooleanInput('overwrite');
     stage = parseInt(core.getInput('stage') || '0');
+    detectPrefixes = core.getInput('stage1-branch-prefixes').split(';');
     github = new Github(github.getOctokit(this.token));
     async findBaseRepo() {
         const input = core.getInput('base');
@@ -211,7 +212,6 @@ const checkout = async (globals, input) => {
 
 ;// CONCATENATED MODULE: ./dist/stage/detect.js
 
-
 /**
  * A stage to detect all tags in the **base repository**
  * that can be checked out to the **head repository**.
@@ -231,10 +231,11 @@ const detect = async (globals) => {
         // Add all unchecked tags
         for (const tag of baseTags) {
             // The checked out branch is in the format
-            // of "checkout-tags/<tag-name>"
-            const correspondingBranch = `${BranchPrefix}${tag}`;
-            if ((!headBranches.includes(correspondingBranch) || globals.overwrite) &&
-                globals.filter.test(tag)) {
+            // of "<prefix><tag-name>"
+            const correspondingBranches = globals.detectPrefixes.map(prefix => `${prefix}${tag}`);
+            const notExists = globals.overwrite ||
+                correspondingBranches.every(branch => !headBranches.includes(branch));
+            if (notExists && globals.filter.test(tag)) {
                 unchecked.push(tag);
             }
         }

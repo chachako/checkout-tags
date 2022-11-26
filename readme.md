@@ -86,6 +86,10 @@ This action checks-out the tags you want from the upstream in your current git w
 >
 > If the value is not specified, that means two stages are executed in order.
 
+##### stage1-branch-prefixes: ''
+
+> **Branch prefixes for detecting checked-out branches. Multiple prefixes are separated by semicolons, such as `checkout-tags/;checkout-tags/`.**
+
 ##### stage2-tags: ''
 
 > **Tags to be checked out in the second stage. This value should be the output value of the first stage.**
@@ -114,7 +118,7 @@ This action checks-out the tags you want from the upstream in your current git w
 
 ------
 
-#### tags
+#### branches
 
 > **A (multi-line) string value represents the checked out list of branches.**
 >

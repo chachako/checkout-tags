@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 
-import { BranchPrefix } from '../consts'
 import { Inputs } from '../model'
 import { Stage } from './index'
 
@@ -28,13 +27,14 @@ export const detect: Stage<unknown, UncheckedTags> = async (
     // Add all unchecked tags
     for (const tag of baseTags) {
       // The checked out branch is in the format
-      // of "checkout-tags/<tag-name>"
-      const correspondingBranch = `${BranchPrefix}${tag}`
-
-      if (
-        (!headBranches.includes(correspondingBranch) || globals.overwrite) &&
-        globals.filter.test(tag)
-      ) {
+      // of "<prefix><tag-name>"
+      const correspondingBranches = globals.detectPrefixes.map(
+        prefix => `${prefix}${tag}`,
+      )
+      const notExists =
+        globals.overwrite ||
+        correspondingBranches.every(branch => !headBranches.includes(branch))
+      if (notExists && globals.filter.test(tag)) {
         unchecked.push(tag)
       }
     }

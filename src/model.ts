@@ -25,6 +25,7 @@ export class Inputs {
   filter = RegExp(core.getInput('filter'))
   overwrite = core.getBooleanInput('overwrite')
   stage = parseInt(core.getInput('stage') || '0')
+  detectPrefixes = core.getInput('stage1-branch-prefixes').split(';')
   github: Github = new Github(github.getOctokit(this.token))
 
   async findBaseRepo() {
