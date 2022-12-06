@@ -41,6 +41,11 @@ inputs:
       Filter tags by regular expression. For example, the regex "^v[2-9]\..*" controls
       only check out tags larger than the "v2" version.
     default: '.*'
+  skip:
+    description: >
+      Skip tags by regular expression. For example, the regex ".*-rc.*" controls to
+      skip tags with the "-rc" suffix.
+    default: ''
   stage:
     description: >
       Stage to be executed can be '1' or '2'.

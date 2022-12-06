@@ -23,6 +23,7 @@ export class Inputs {
   base: RepositoryInfo
   head = parseRepo(core.getInput('head'))
   filter = RegExp(core.getInput('filter'))
+  skip = RegExp(core.getInput('skip'))
   overwrite = core.getBooleanInput('overwrite')
   stage = parseInt(core.getInput('stage') || '0')
   detectPrefixes = core.getInput('stage1-branch-prefixes').split(';')

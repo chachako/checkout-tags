@@ -34,7 +34,7 @@ export const detect: Stage<unknown, UncheckedTags> = async (
       const notExists =
         globals.overwrite ||
         correspondingBranches.every(branch => !headBranches.includes(branch))
-      if (notExists && globals.filter.test(tag)) {
+      if (notExists && globals.filter.test(tag) && !globals.skip.test(tag)) {
         unchecked.push(tag)
       }
     }

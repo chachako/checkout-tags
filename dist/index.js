@@ -122,6 +122,7 @@ class Inputs {
     base;
     head = parseRepo(core.getInput('head'));
     filter = RegExp(core.getInput('filter'));
+    skip = RegExp(core.getInput('skip'));
     overwrite = core.getBooleanInput('overwrite');
     stage = parseInt(core.getInput('stage') || '0');
     detectPrefixes = core.getInput('stage1-branch-prefixes').split(';');
@@ -235,7 +236,7 @@ const detect = async (globals) => {
             const correspondingBranches = globals.detectPrefixes.map(prefix => `${prefix}${tag}`);
             const notExists = globals.overwrite ||
                 correspondingBranches.every(branch => !headBranches.includes(branch));
-            if (notExists && globals.filter.test(tag)) {
+            if (notExists && globals.filter.test(tag) && !globals.skip.test(tag)) {
                 unchecked.push(tag);
             }
         }
