@@ -1036,9 +1036,9 @@ natural-compare@^1.4.0:
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
 node-fetch@^2.6.7:
-  version "2.6.12"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.12.tgz#02eb8e22074018e3d5a83016649d04df0e348fba"
-  integrity sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==
+  version "2.6.13"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.13.tgz#a20acbbec73c2e09f9007de5cda17104122e0010"
+  integrity sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -1234,9 +1234,9 @@ tr46@~0.0.3:
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
 ts-api-utils@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.0.1.tgz#8144e811d44c749cd65b2da305a032510774452d"
-  integrity sha512-lC/RGlPmwdrIBFTX59wwNzqh7aR2otPNPR/5brHZm/XKFYKsfqxihXUe9pU3JI+3vGkl+vyCoNNnPhJn3aLK1A==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.0.2.tgz#7c094f753b6705ee4faee25c3c684ade52d66d99"
+  integrity sha512-Cbu4nIqnEdd+THNEsBdkolnOXhg0I8XteoHaEKgvsxpsbWda4IsUut2c187HxywQCvveojow0Dgw/amxtSKVkQ==
 
 tunnel@^0.0.6:
   version "0.0.6"
