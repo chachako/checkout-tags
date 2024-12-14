@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "5.2.0",
-    "@types/node": "22.10.1",
+    "@types/node": "22.10.2",
     "@typescript-eslint/eslint-plugin": "8.17.0",
     "@typescript-eslint/parser": "8.17.0",
     "@vercel/ncc": "0.38.3",
