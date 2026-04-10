@@ -27,7 +27,7 @@
     "@vercel/ncc": "0.38.4",
     "eslint": "10.2.0",
     "eslint-config-prettier": "10.1.8",
-    "prettier": "3.8.1",
+    "prettier": "3.8.2",
     "prettier-plugin-organize-imports": "4.3.0",
     "typescript": "6.0.2"
   }
